@@ -1,0 +1,17 @@
+name: manufacturing-process
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - jupyterlab
+  - numpy
+  - pandas
+  - matplotlib
+  - seaborn
+  - scikit-learn
+  - scipy
+  - statsmodels
+  - plotly
+  - ipykernel
+  - ipython
+  - black
