@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-df=pd.read_csv('../../data/raw/continuous_factory_process.csv')
+df=pd.read_pickle('../../data/interim/data_processed.pkl')
 
 
 
@@ -87,4 +87,6 @@ def add_engineered_features(df: pd.DataFrame) -> pd.DataFrame:
 
 df_eng=add_engineered_features(df)
 
-df_eng.to_pickle("../../data/interim/data_processed.pkl")
+df_eng.shape
+
+df_eng.to_pickle("../../data/interim/data_engineered.pkl")
