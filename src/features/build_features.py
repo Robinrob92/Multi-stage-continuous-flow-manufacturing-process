@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 df=pd.read_csv('../../data/raw/continuous_factory_process.csv')
 
-df['Stage1.Output.Measurement0.U.Actual'].plot()
+
 
 
 def clean_timeseries(ts, threshold=3):
@@ -38,7 +38,7 @@ ts_cleaned = clean_timeseries(df['Stage1.Output.Measurement0.U.Actual'])
 
 df['Stage1.Output.Measurement0.U.Actual']=ts_cleaned
 
-import pandas as pd
+
 
 def add_engineered_features(df: pd.DataFrame) -> pd.DataFrame:
     # Calculate the average temperature across all machines
@@ -84,3 +84,7 @@ def add_engineered_features(df: pd.DataFrame) -> pd.DataFrame:
     df['AmbientTemperature_MotorAmperage_Interaction'] = df['AmbientConditions.AmbientTemperature.U.Actual'] * df['Avg_MotorAmperage']
     
     return df
+
+df_eng=add_engineered_features(df)
+
+df_eng.to_pickle("../../data/interim/data_processed.pkl")
