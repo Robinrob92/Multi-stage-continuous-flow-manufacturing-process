@@ -35,4 +35,52 @@ def clean_timeseries(ts, threshold=3):
 
 # Clean the time series
 ts_cleaned = clean_timeseries(df['Stage1.Output.Measurement0.U.Actual'])
-ts_cleaned.plot()
+
+df['Stage1.Output.Measurement0.U.Actual']=ts_cleaned
+
+import pandas as pd
+
+def add_engineered_features(df: pd.DataFrame) -> pd.DataFrame:
+    # Calculate the average temperature across all machines
+    df['Avg_MaterialTemperature'] = (
+        df['Machine1.MaterialTemperature.U.Actual'] +
+        df['Machine2.MaterialTemperature.U.Actual'] +
+        df['Machine3.MaterialTemperature.U.Actual']
+    ) / 3
+
+    # Calculate the average motor amperage across all machines
+    df['Avg_MotorAmperage'] = (
+        df['Machine1.MotorAmperage.U.Actual'] +
+        df['Machine2.MotorAmperage.U.Actual'] +
+        df['Machine3.MotorAmperage.U.Actual']
+    ) / 3
+
+    # Calculate the average material pressure across all machines
+    df['Avg_MaterialPressure'] = (
+        df['Machine1.MaterialPressure.U.Actual'] +
+        df['Machine2.MaterialPressure.U.Actual'] +
+        df['Machine3.MaterialPressure.U.Actual']
+    ) / 3
+
+    # Calculate the average exit zone temperature across all machines
+    df['Avg_ExitZoneTemperature'] = (
+        df['Machine1.ExitZoneTemperature.C.Actual'] +
+        df['Machine2.ExitZoneTemperature.C.Actual'] +
+        df['Machine3.ExitZoneTemperature.C.Actual']
+    ) / 3
+
+    # Calculate the total raw material properties across all machines
+    for i in range(1, 5):
+        df[f'Total_RawMaterial_Property{i}'] = (
+            df[f'Machine1.RawMaterial.Property{i}'] +
+            df[f'Machine2.RawMaterial.Property{i}'] +
+            df[f'Machine3.RawMaterial.Property{i}']
+        )
+    
+    # Calculate the interaction between ambient conditions and average machine parameters
+    df['AmbientHumidity_MaterialTemperature_Interaction'] = df['AmbientConditions.AmbientHumidity.U.Actual'] * df['Avg_MaterialTemperature']
+    df['AmbientTemperature_MaterialTemperature_Interaction'] = df['AmbientConditions.AmbientTemperature.U.Actual'] * df['Avg_MaterialTemperature']
+    df['AmbientHumidity_MotorAmperage_Interaction'] = df['AmbientConditions.AmbientHumidity.U.Actual'] * df['Avg_MotorAmperage']
+    df['AmbientTemperature_MotorAmperage_Interaction'] = df['AmbientConditions.AmbientTemperature.U.Actual'] * df['Avg_MotorAmperage']
+    
+    return df
