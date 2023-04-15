@@ -4,6 +4,8 @@ from typing import Callable
 
 df=pd.read_pickle('../../data/interim/data_processed.pkl')
 
+df.head(10)
+
 
 def select_best_features(df: pd.DataFrame, target_column: str, score_func: Callable = f_regression, k: int = 10) -> pd.DataFrame:
     """
