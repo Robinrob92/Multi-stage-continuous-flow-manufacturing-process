@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.feature_selection import SelectKBest, f_regression
 from typing import Callable
 
-df=pd.read_pickle('../../data/interim/data.pkl')
+df=pd.read_pickle('../../data/interim/data_processed.pkl')
 
 
 def select_best_features(df: pd.DataFrame, target_column: str, score_func: Callable = f_regression, k: int = 10) -> pd.DataFrame:
@@ -31,3 +31,5 @@ def select_best_features(df: pd.DataFrame, target_column: str, score_func: Calla
     best_features_df = df.iloc[:, best_feature_indices].join(y)
 
     return best_features_df
+
+select_best_features(df=df, target_column='St')
